@@ -1,0 +1,92 @@
+{
+    "intents": [
+        {
+            "tag": "saludo",
+            "patterns": [
+                "Hola",
+                "¿Cómo estás?",
+                "¿Qué tal?",
+                "¡Buenos días!",
+                "¡Hola!",
+                "¡Buenas tardes!"
+            ],
+            "responses": [
+                "¡Hola!",
+                "¡Hola! ¿En qué puedo ayudarte?",
+                "¡Hola! ¿Cómo estás?"
+            ],
+            "context": [
+                ""
+            ]
+        },
+        {
+            "tag": "reposicion_evaluacion",
+            "patterns": [
+                "¿Qué dice el artículo 178 sobre reposición de evaluación?",
+                "¿Cuándo puedo solicitar reposición de evaluación?",
+                "¿Cómo se realiza la reposición de una evaluación según el artículo 178?",
+                "¿Qué establece el artículo 178 sobre las evaluaciones?",
+                "¿Cuáles son los derechos de los estudiantes según el artículo 178?",
+                "¿Cómo puedo reponer una evaluación?",
+                "¿Qué debo hacer si no pude realizar una evaluación?",
+                "¿Qué dice el reglamento sobre la reposición de evaluaciones?",
+                "¿Qué procedimiento debo seguir para reponer una evaluación?",
+                "Según el artículo 178, ¿puedo reponer una evaluación fallida?",
+                "¿Es posible solicitar reposición de nota baja?",
+                "¿Qué pasa si falto a una evaluación importante?",
+                "¿Cómo aplica la reposición de evaluaciones según el artículo 178?",
+                "¿Cuándo tengo derecho a reponer una evaluación?",
+                "¿Qué requisitos establece el artículo 178 para reponer una evaluación?",
+                "¿Se puede mejorar una nota baja mediante reposición?",
+                "¿Qué sucede si un estudiante de grado o posgrado falla una evaluación?",
+                "¿Qué se considera para otorgar una reposición de evaluación?",
+                "Según el artículo 178, ¿puedo reponer cualquier evaluación?",
+                "¿Cuándo se justifica la reposición de una evaluación?"
+            ],
+            "responses": [
+                "El artículo 178 establece que los estudiantes de grado o posgrado tienen derecho a la reposición de una evaluación que no pudieron realizar, según lo estipulado en el programa de la experiencia educativa. Además, se puede solicitar la reposición de la nota más baja en caso de que se aplique."
+            ],
+            "context": [
+                ""
+            ]
+        },
+        {
+            "tag": "asignaturas_sin_reposicion",
+            "patterns": [
+                "¿Cuáles asignaturas no tienen reposición?",
+                "¿Qué asignaturas no son objeto de reposición según el artículo 178?",
+                "¿Hay asignaturas en las que no pueda pedir reposición de evaluación?",
+                "¿Qué asignaturas no permiten reposición de evaluaciones?",
+                "¿Cuáles son las materias exentas de reposición?",
+                "¿Qué establece el reglamento sobre asignaturas sin reposición?",
+                "¿Qué materias no admiten reposición según mi plan de estudios?",
+                "¿Cómo sé si una asignatura no permite reposición?",
+                "¿Qué dice el plan de estudios sobre asignaturas sin reposición?",
+                "¿Hay restricciones para la reposición en algunas materias?",
+                "¿Qué materias excluye el reglamento de las reposiciones?",
+                "¿Cuáles asignaturas no tienen derecho a reposición?",
+                "¿Cómo identificar asignaturas sin reposición en mi carrera?",
+                "¿En qué casos no puedo solicitar reposición para una materia?",
+                "¿Qué condiciones limitan la reposición en ciertas materias?",
+                "¿Qué materias no permiten reponer evaluaciones según el artículo 178?",
+                "¿Cómo afecta el artículo 178 a las materias sin reposición?",
+                "¿Qué materias están excluidas de la reposición de calificaciones?",
+                "¿Qué tipo de asignaturas no son elegibles para reposición?",
+                "¿Existen asignaturas en las que no se aplica la reposición?"
+            ],
+            "responses": [
+                "En el plan de estudios de cada carrera se especificarán las asignaturas que no son objeto de reposición."
+            ],
+            "context": [
+                ""
+            ]
+        },
+        {
+            "tag": "no_match",
+            "patterns": [],
+            "responses": [
+                "Lo siento, no entiendo la pregunta. ¿Puedes reformularla?"
+            ]
+        }
+    ]
+}

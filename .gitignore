@@ -1,0 +1,48 @@
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.swp
+*.swo
+.Python
+
+# Django
+*.sqlite3
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+db.sqlite3
+local_settings.py
+
+# Environments
+.env
+
+# Certificados y claves sensibles
+*.crt
+*.key
+
+# Virtual environment
+venv/
+env/
+ENV/
+.venv/
+.pytest_cache/
+
+# IDEs/Editors
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Others
+/static/
+staticfiles/
+media/
+node_modules/
