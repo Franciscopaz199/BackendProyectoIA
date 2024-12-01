@@ -1,0 +1,8 @@
+Django
+djangorestframework
+django-cors-headers
+django-extensions
+tensorflow
+nltk
+numpy
+pickle-mixin
