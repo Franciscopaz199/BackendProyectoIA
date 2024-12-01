@@ -1,20 +1,17 @@
-# Usa una imagen base oficial de Python
-FROM python:3.9-slim
+FROM python:3.10.6
 
-# Establece el directorio de trabajo dentro del contenedor
-WORKDIR /app
+ENV PYTHONUNBUFFERED 1
+RUN mkdir /code
 
-# Copia el archivo de requerimientos al contenedor
-COPY requirements.txt .
+WORKDIR /code
+COPY . /code/
 
-# Instala los paquetes necesarios
-RUN pip install --no-cache-dir -r requirements.txt
+# Instalar las dependencias de Python
+RUN pip install -r requirements.txt
 
-# Copia el código del proyecto al contenedor
-COPY . .
+# Descargar los recursos de NLTK necesarios (en este caso 'punkt_tab' y 'wordnet')
+RUN python -m nltk.downloader punkt_tab
+RUN python -m nltk.downloader wordnet
 
-# Expone el puerto para que Django sea accesible
-EXPOSE 8000
-
-# Ejecuta migraciones y levanta el servidor
-CMD ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
+# Configurar y ejecutar la aplicación con Gunicorn
+CMD ["gunicorn", "-c", "config/gunicorn/conf.py", "--bind", ":8000", "BackendChatBot.wsgi:application"]

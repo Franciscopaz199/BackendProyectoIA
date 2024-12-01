@@ -1,0 +1,25 @@
+# Ignorar archivos temporales y de configuración locales
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.env
+.env*
+
+# Ignorar carpetas innecesarias
+.git/
+.vscode/
+.idea/
+node_modules/
+dist/
+build/
+
+# Ignorar datos sensibles o archivos grandes
+*.log
+*.sqlite3
+*.db
+.DS_Store
+
+# Ignorar las claves
+cert.crt
+cert.key
