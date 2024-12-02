@@ -3,17 +3,23 @@ version: "3"
 services:
   django_app:
     build: .
+    restart: unless-stopped
     volumes:
       - static:/code/static
       - .:/code
       
   nginx:
-    image: nginx:1.13
+    image: nginx:alpine
+    restart: unless-stopped
+    init: true
+    tty: true
     ports:
-      - 8000:80
+      - "90:90"
     volumes:
-      - ./config/nginx/conf.d:/etc/nginx/conf.d
       - static:/code/static
+      - ./config/nginx/conf.d:/etc/nginx/conf.d
+      - ../UNAH-VINCULACION/configuracion/certbot/www:/var/www/certbot/:ro
+      - ../UNAH-VINCULACION/configuracion/certbot/conf/:/etc/nginx/ssl/:ro
     depends_on:
       - django_app
 
