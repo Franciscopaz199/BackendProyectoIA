@@ -7,7 +7,9 @@ services:
     volumes:
       - static:/code/static
       - .:/code
-      
+    networks:
+      - django-network
+
   nginx:
     image: nginx:alpine
     restart: unless-stopped
@@ -22,8 +24,9 @@ services:
       - ../UNAH-VINCULACION/configuracion/certbot/conf/:/etc/nginx/ssl/:ro
     depends_on:
       - django_app
+    networks:
+      - django-network
 
-    #MySQL
   db:
     container_name: db
     image: mysql:latest
@@ -37,11 +40,14 @@ services:
       - ./db_data:/var/lib/mysql
     restart: always
     networks:
-      - app-network
+      - django-network
 
 volumes:
   .:
   static:
-
   dbdata:
     driver: local
+
+networks:
+  django-network:
+    driver: bridge
