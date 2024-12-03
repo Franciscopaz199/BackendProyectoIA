@@ -46,3 +46,4 @@ Thumbs.db
 staticfiles/
 media/
 node_modules/
+db_data/
