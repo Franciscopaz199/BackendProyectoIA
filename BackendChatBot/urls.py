@@ -19,6 +19,7 @@ from django.urls import path
 from BackendChatBot.controllers.apicontroller import test_view
 
 urlpatterns = [
+     path('panchobotapi/', test_view, name='test-view'),  # URL para la vista de prueba
      path('', admin.site.urls),  # URL raíz para el admin
-    path('test/', test_view, name='test-view'),
+    
 ]

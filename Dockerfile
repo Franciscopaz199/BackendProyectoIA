@@ -12,6 +12,9 @@ RUN pip install -r requirements.txt
 # Descargar los recursos de NLTK necesarios (en este caso 'punkt_tab' y 'wordnet')
 RUN python -m nltk.downloader punkt_tab
 RUN python -m nltk.downloader wordnet
+# Ejecuta collectstatic sin interacción
+RUN python manage.py collectstatic --noinput
+
 
 # Configurar y ejecutar la aplicación con Gunicorn
 CMD ["gunicorn", "-c", "config/gunicorn/conf.py", "--bind", ":8000", "BackendChatBot.wsgi:application"]
