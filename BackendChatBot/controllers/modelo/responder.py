@@ -1,28 +1,39 @@
 import nltk
-import json
 import pickle
 import numpy as np
 import random
 from nltk.stem import WordNetLemmatizer
 from tensorflow.keras.models import load_model
+from data_crud.models import Intent  # Asumiendo que tienes un modelo 'Intent' en tu base de datos
 
-
-
-
-# Cargar el modelo entrenado y los archivos necesarios
 class Chatbot:
     def __init__(self):
         # Cargar el modelo
         self.model = load_model('BackendChatBot/controllers/modelo/chatbot_model.keras')
         
-        # Cargar las palabras y las clases
-        self.intents = json.loads(open('BackendChatBot/controllers/modelo/intents.json').read())
+        # Cargar las palabras y las clases desde la base de datos
+        self.intents = self.load_intents_from_db()
         self.words = pickle.load(open('BackendChatBot/controllers/modelo/words.pkl', 'rb'))
         self.classes = pickle.load(open('BackendChatBot/controllers/modelo/classes.pkl', 'rb'))
         
         # Inicializar el lematizador
         self.lemmatizer = WordNetLemmatizer()
     
+    def load_intents_from_db(self):
+        # Cargar intenciones desde la base de datos
+        intents = []
+        db_intents = Intent.objects.prefetch_related('patterns').all()
+
+        for intent in db_intents:
+            intent_data = {'tag': intent.tag, 'patterns': [], 'responses': [response.text for response in intent.responses.all()]}
+            
+            for pattern in intent.patterns.all():
+                intent_data['patterns'].append(pattern.text)
+
+            intents.append(intent_data)
+
+        return intents
+
     # Función para limpiar la entrada
     def clean_up_sentence(self, sentence):
         # Tokenizar la oración
@@ -58,7 +69,7 @@ class Chatbot:
     # Función para obtener la respuesta a partir de la clase predicha
     def get_response(self, ints):
         tag = ints[0]['intent']
-        list_of_intents = self.intents['intents']
+        list_of_intents = self.intents
         
         for i in list_of_intents:
             if i['tag'] == tag:

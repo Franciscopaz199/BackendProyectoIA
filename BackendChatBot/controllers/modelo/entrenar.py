@@ -8,9 +8,9 @@ from nltk.stem import WordNetLemmatizer
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.optimizers import SGD
-
+from data_crud.models import Intent
 class ChatbotTrainer:
-    def __init__(self, intents_file):
+    def __init__(self, intents_file=None):
         self.intents_file = intents_file
         self.lemmatizer = WordNetLemmatizer()
         self.words = []
@@ -21,12 +21,31 @@ class ChatbotTrainer:
         self.train_x = []
         self.train_y = []
 
+    # Cargar intenciones desde el archivo JSON
     def load_intents(self):
         with open(self.intents_file, 'r') as file:
             self.intents = json.load(file)
 
+    # Cargar intenciones desde la base de datos
+    def train_by_database(self):
+        self.intents = []
+
+        # Usamos prefetch_related para evitar N+1 consultas
+        intents = Intent.objects.prefetch_related('patterns').all()
+
+        for intent in intents:
+            intent_data = {'tag': intent.tag, 'patterns': [], 'responses': [response.text for response in intent.responses.all()]}
+            
+            # Acceder a los patrones prefetchados
+            for pattern in intent.patterns.all():
+                intent_data['patterns'].append(pattern.text)
+
+            self.intents.append(intent_data)
+
+        print(self.intents)
+
     def preprocess_data(self):
-        for intent in self.intents['intents']:
+        for intent in self.intents:
             for pattern in intent['patterns']:
                 # Tokenize each word
                 tokens = nltk.word_tokenize(pattern)
@@ -42,8 +61,8 @@ class ChatbotTrainer:
         self.classes = sorted(set(self.classes))
 
         # Save words and classes for future use
-        pickle.dump(self.words, open('BackendChatBot/BackendChatBot/controllers/modelo/words.pkl', 'wb'))
-        pickle.dump(self.classes, open('BackendChatBot/BackendChatBot/controllers/modelo/classes.pkl', 'wb'))
+        pickle.dump(self.words, open('BackendChatBot/controllers/modelo/words.pkl', 'wb'))
+        pickle.dump(self.classes, open('BackendChatBot/controllers/modelo/classes.pkl', 'wb'))
 
     def create_training_data(self):
         training = []
@@ -77,11 +96,11 @@ class ChatbotTrainer:
 
     def train_model(self, model, epochs=200, batch_size=5):
         model.fit(self.train_x, self.train_y, epochs=epochs, batch_size=batch_size, verbose=1)
-        model.save('BackendChatBot/BackendChatBot/controllers/modelo/chatbot_model.keras')
+        model.save('BackendChatBot/controllers/modelo/chatbot_model.keras')
         print("Modelo creado y guardado en 'chatbot_model.keras'")
 
     def run(self):
-        self.load_intents()
+        self.train_by_database()
         self.preprocess_data()
         print(f"{len(self.documents)} documentos")
         print(f"{len(self.classes)} clases: {self.classes}")
@@ -96,5 +115,6 @@ class ChatbotTrainer:
 # Ejecución principal
 if __name__ == "__main__":
     print("PATH: ", os.getcwd())
-    trainer = ChatbotTrainer('BackendChatBot/BackendChatBot/controllers/modelo/intents.json')
+    trainer = ChatbotTrainer()
     trainer.run()
+

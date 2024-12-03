@@ -30,14 +30,16 @@ SECRET_KEY = 'django-insecure-f%1&^_rqkt=+2lbp#u41+zwi7t49ayufl@)yu73yr64kfs^r94
 CORS_ALLOW_ALL_ORIGINS = True
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', default=True)
 
 ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
+
 INSTALLED_APPS = [
+    'BackendChatBot',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -47,6 +49,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
      'django_extensions',
+     'data_crud',
 ]
 
 MIDDLEWARE = [
@@ -93,11 +96,17 @@ WSGI_APPLICATION = 'BackendChatBot.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',  # Usar el backend de MySQL
+        'NAME': os.getenv('DB_NAME'),           # Nombre de la base de datos
+        'USER': os.getenv('DB_USER'),         # Usuario de MySQL
+        'PASSWORD': os.getenv('DB_PASSWORD'),   # Contraseña de MySQL
+        'HOST': os.getenv('DB_HOST'),           # Host de MySQL (por defecto localhost)
+        'PORT': os.getenv('DB_PORT'),           # Puerto de MySQL (por defecto 3306)
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"  # Opcional, para evitar errores por configuraciones estrictas.
+        },
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -121,7 +130,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es'
 
 TIME_ZONE = 'UTC'
 

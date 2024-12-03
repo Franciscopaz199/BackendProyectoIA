@@ -23,6 +23,25 @@ services:
     depends_on:
       - django_app
 
+    #MySQL
+  db:
+    container_name: db
+    image: mysql:latest
+    init: true
+    environment:
+      - MYSQL_ROOT_PASSWORD=R3m3d10s2021
+      - MYSQL_DATABASE=panchobot
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+    volumes:
+      - ./db_data:/var/lib/mysql
+    restart: always
+    networks:
+      - app-network
+
 volumes:
   .:
   static:
+
+  dbdata:
+    driver: local
