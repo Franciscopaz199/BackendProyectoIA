@@ -27,7 +27,7 @@ services:
     networks:
       - django-network
 
-  db:
+  dbjango:
     container_name: db
     image: mysql:latest
     init: true
