@@ -11,28 +11,28 @@ class Chatbot:
         # Cargar el modelo
         self.model = load_model('BackendChatBot/controllers/modelo/chatbot_model.keras')
         
-        # Cargar las palabras y las clases desde la base de datos
-        self.intents = self.load_intents_from_db()
+        # Cargar las palabras y las clases
         self.words = pickle.load(open('BackendChatBot/controllers/modelo/words.pkl', 'rb'))
         self.classes = pickle.load(open('BackendChatBot/controllers/modelo/classes.pkl', 'rb'))
         
         # Inicializar el lematizador
         self.lemmatizer = WordNetLemmatizer()
-    
-    def load_intents_from_db(self):
-        # Cargar intenciones desde la base de datos
-        intents = []
-        db_intents = Intent.objects.prefetch_related('patterns').all()
+        
+        # Diccionario para almacenar respuestas de los intents (carga diferida)
+        self.responses_cache = {}
 
-        for intent in db_intents:
-            intent_data = {'tag': intent.tag, 'patterns': [], 'responses': [response.text for response in intent.responses.all()]}
-            
-            for pattern in intent.patterns.all():
-                intent_data['patterns'].append(pattern.text)
+    def load_intent_responses(self, tag):
+        """Carga las respuestas de un intent específico desde la base de datos, si no están cacheadas."""
+        if tag not in self.responses_cache:
+            # Buscar el Intent por tag en la base de datos
+            try:
+                intent = Intent.objects.get(tag=tag)
+                # Guardar las respuestas en el cache
+                self.responses_cache[tag] = [response.text for response in intent.responses.all()]
+            except Intent.DoesNotExist:
+                self.responses_cache[tag] = []  # Si no existe el intent, no hay respuestas
 
-            intents.append(intent_data)
-
-        return intents
+        return self.responses_cache[tag]
 
     # Función para limpiar la entrada
     def clean_up_sentence(self, sentence):
@@ -69,17 +69,19 @@ class Chatbot:
     # Función para obtener la respuesta a partir de la clase predicha
     def get_response(self, ints):
         tag = ints[0]['intent']
-        list_of_intents = self.intents
-        
-        for i in list_of_intents:
-            if i['tag'] == tag:
-                return random.choice(i['responses'])
-    
+        # Cargar las respuestas desde la base de datos o cache
+        responses = self.load_intent_responses(tag)
+        if responses:
+            return random.choice(responses)
+        else:
+            return "Lo siento, no tengo una respuesta para esa pregunta."
+
     # Función principal para preguntar y obtener respuesta
     def preguntar(self, question):
         ints = self.predict_class(question)
         response = self.get_response(ints)
         return response
+
 
 
 # Ejemplo de uso
