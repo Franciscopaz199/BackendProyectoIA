@@ -22,11 +22,11 @@ class Response:
     @staticmethod
     def generate_response(question, modelo):
         if modelo == "gemeni":
-            return Response.response_with_gemeni(question)
+            return Response.response_with_gemeni(question), "- Potenciado por Gemeni"
         elif modelo == "gpt4":
-            return Response.response_with_chat_gpt(question)
+            return Response.response_with_chat_gpt(question), "- Potenciado por GPT-4"
         elif modelo == "panchobot":
-            return Response.response_with_pancho_bot(question)
+            return Response.response_with_pancho_bot(question), " "
         else:
             return "Modelo no soportado"
 

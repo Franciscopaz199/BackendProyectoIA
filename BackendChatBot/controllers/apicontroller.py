@@ -19,10 +19,12 @@ def test_view(request):
                 return JsonResponse({'error': 'Question is required'}, status=400)
             
             # Configurar el modelo generativo con la API Key
-            response = Response.generate_response(question, modelo)
+            response,modelo = Response.generate_response(question, modelo)
             
             # Devolver la respuesta generada
-            return JsonResponse({'answer': response}, status=200)
+            return JsonResponse({'answer': response,
+                                'modelo': modelo
+                                 }, status=200)
 
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON format'}, status=400)
