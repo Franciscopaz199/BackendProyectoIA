@@ -73,7 +73,7 @@ class Response:
                 ],
             )
 
-            return completion.choices[0].message.content + "\n\n Response by GPT-4"
+            return completion.choices[0].message.content 
         except Exception as e:
             return f"Error al conectarse a la API: {str(e)}"
     
