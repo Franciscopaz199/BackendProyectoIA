@@ -46,7 +46,7 @@ class Response:
 
          # Pasar el texto al modelo Gemini
         response = model.generate_content(data_text)
-        return response.text + "\n\n Response by Gemeni"
+        return response.text 
         
 
     @staticmethod
@@ -83,5 +83,5 @@ class Response:
         chatbot = Chatbot()
         # Obtener la respuesta a partir de la pregunta
         response = chatbot.preguntar(question)
-        return response + "\n\n Response by PanchoBot"
+        return response 
      
