@@ -9,6 +9,8 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.optimizers import SGD
 from data_crud.models import Intent
+
+
 class ChatbotTrainer:
     def __init__(self, intents_file=None):
         self.intents_file = intents_file

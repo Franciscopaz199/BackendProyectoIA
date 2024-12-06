@@ -22,11 +22,11 @@ class Response:
     @staticmethod
     def generate_response(question, modelo):
         if modelo == "gemeni":
-            return Response.response_with_gemeni(question)
+            return Response.response_with_gemeni(question), "- Potenciado por Gemeni"
         elif modelo == "gpt4":
-            return Response.response_with_chat_gpt(question)
+            return Response.response_with_chat_gpt(question), "- Potenciado por GPT-4"
         elif modelo == "panchobot":
-            return Response.response_with_pancho_bot(question)
+            return Response.response_with_pancho_bot(question), " "
         else:
             return "Modelo no soportado"
 
@@ -46,7 +46,7 @@ class Response:
 
          # Pasar el texto al modelo Gemini
         response = model.generate_content(data_text)
-        return response.text + "\n\n Response by Gemeni"
+        return response.text 
         
 
     @staticmethod
@@ -73,7 +73,7 @@ class Response:
                 ],
             )
 
-            return completion.choices[0].message.content + "\n\n Response by GPT-4"
+            return completion.choices[0].message.content 
         except Exception as e:
             return f"Error al conectarse a la API: {str(e)}"
     
@@ -83,5 +83,5 @@ class Response:
         chatbot = Chatbot()
         # Obtener la respuesta a partir de la pregunta
         response = chatbot.preguntar(question)
-        return response + "\n\n Response by PanchoBot"
+        return response 
      
