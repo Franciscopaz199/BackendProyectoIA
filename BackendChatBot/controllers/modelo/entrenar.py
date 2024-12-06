@@ -96,7 +96,7 @@ class ChatbotTrainer:
         model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'])
         return model
 
-    def train_model(self, model, epochs=1200, batch_size=5):
+    def train_model(self, model, epochs=300, batch_size=5):
         model.fit(self.train_x, self.train_y, epochs=epochs, batch_size=batch_size, verbose=1)
         model.save('BackendChatBot/controllers/modelo/chatbot_model.keras')
         print("Modelo creado y guardado en 'chatbot_model.keras'")
